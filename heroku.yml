@@ -1,3 +1,9 @@
 build:
   docker:
     web: Dockerfile
+run:
+  web:
+    command:
+      - --port=9000
+      - --path=/myapp
+      - --allow_discovery=true    
