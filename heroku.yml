@@ -4,6 +4,6 @@ build:
 run:
   web:
     command:
-      - --port=${PORT:=9000}
+      - --port=443
       - --path=/myapp
       - --allow_discovery=true    
