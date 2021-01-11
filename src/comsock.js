@@ -8,7 +8,7 @@ export default class comSignal extends Peer {
         // Register with the peer server
         super(uid,cfg)
         this.connecters = {}
-        this.constraints = media.constraints || {
+        this.constraints = (media && media.constraints) || {
             audio: {
                 echoCancellation: true,
                 noiseSuppression: true, 

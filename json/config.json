@@ -47,6 +47,19 @@
             "sdpSemantics": "unified-plan" 
         }
     },
+    "media": {
+        "constraints": {
+            "audio": {
+                "echoCancellation": true,
+                "noiseSuppression": true, 
+                "autoGainControl": false
+            },
+            "video": {
+                "width": { "min": 320, "ideal": 1280, "max": 1920 },
+                "height": { "min": 240, "ideal": 720, "max": 1080 }
+            }            
+        }
+    },
     "theme": "dark",
     "welcome": "Welcome to our Website!",
     "services": {
