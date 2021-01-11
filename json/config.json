@@ -3,7 +3,7 @@
     "type": "master", 
     "peer": {
         "key": "peerjs",
-        "host": "vcpeer.herokuapp.com",
+        "host": "vcpeer.appspot.com",
         "port": 443,
         "debug": 1,
         "path": "/myapp",

@@ -54,7 +54,8 @@
         <!--<legend>Select contact connection:</legend>-->
         <div class="select">
         <select v-model="contact" :required="true" 
-                @change="onSelect($event)">
+                @change="onSelect($event)"
+                @click="peersUpdatePeers()">
           <optgroup label="Team contacts">
           </optgroup>  
           <optgroup label="Guest contacts">
@@ -192,7 +193,7 @@ export default {
 
       const self = this
       const uid = (json.type === 'super') ? json.id : json.id+Math.floor(Math.random()*2**18).toString(36).padStart(4,0)
-      this.comChannel = new comSignal(uid, json.peer
+      this.comChannel = new comSignal(uid, json.peer, json.media
         ,{
           data: (data) => {
             this.newMessagesCount = this.isChatOpen ? this.newMessagesCount : this.newMessagesCount + 1
@@ -290,11 +291,22 @@ export default {
       // called when the user scrolls message list to top
       // leverage pagination for loading another page of messages
     },
-    handleOnType () {
-      console.log('Emit typing event =>',this.contact)
+    showStylingInfo() {
+      this.$modal.show('dialog', {
+        title: 'Info',
+        text:
+          'You can use *word* to <strong>boldify</strong>, /word/ to <em>emphasize</em>, _word_ to <u>underline</u>, `code` to <code>write = code;</code>, ~this~ to <del>delete</del> and ^sup^ or ¡sub¡ to write <sup>sup</sup> and <sub>sub</sub>'
+      })
+    },
+    messageStylingToggled(e) {
+      this.messageStyling = e.target.checked
+    },
+    handleOnType() {
+      this.$root.$emit('onType')
+      this.userIsTyping = true
     },
     editMessage(message){
-      const m = this.messageList.find(m=>m.id === message.id);
+      const m = this.messageList.find(m => m.id === message.id);
       m.isEdited = true;
       m.data.text = message.data.text;
     },
@@ -303,13 +315,25 @@ export default {
       m.type = 'system';
       m.data.text = 'This message has been removed';
     },
+    like(id){
+      const m = this.messageList.findIndex(m => m.id === id);
+      var msg = this.messageList[m];
+      msg.liked = !msg.liked;
+      this.$set(this.messageList, m, msg);
+    },
     ttlUpdate() {
       setInterval(()=>{
         if (this.comChannel) {
             this.participants = []
             this.comChannel.updatePeers()
         }
-      },10000)
+      },30000)
+    },
+    peersUpdatePeers() {
+        if (this.comChannel) {
+            this.participants = []
+            this.comChannel.updatePeers()
+        }
     },
     msgWelcome() {
       setTimeout(() => {  

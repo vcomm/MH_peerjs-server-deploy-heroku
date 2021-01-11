@@ -65,3 +65,5 @@ app.get("/", (request, response) => {
   console.log(`Product load:`,__dirname + "/index.html");
   response.sendFile(__dirname + "/index.html");
 });
+
+module.exports = app;

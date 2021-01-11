@@ -3,17 +3,17 @@ import Peer from 'peerjs';
 
 export default class comSignal extends Peer {
 
-    constructor(uid,cfg,callbacks) {
+    constructor(uid,cfg,media,callbacks) {
         console.log(`Connect to ${cfg.host}:${cfg.port}`)
         // Register with the peer server
         super(uid,cfg)
         this.connecters = {}
-        this.constraints = {
-            audio: /*{
+        this.constraints = media.constraints || {
+            audio: {
                 echoCancellation: true,
                 noiseSuppression: true, 
                 autoGainControl: false
-            }*/false,
+            },
             video: {
                 width: { min: 320, ideal: 1280, max: 1920 },
                 height: { min: 240, ideal: 720, max: 1080 }
